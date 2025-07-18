@@ -21,6 +21,12 @@ function TaskInput({ onAddTask }: TaskInputProps) {
         value={taskInput}
         onChange={(e) => setTaskInput(e.target.value)}
         className="w-80"
+        placeholder="Add a new task..."
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleAddTask();
+          }
+        }}
       />
       <Button className="cursor-pointer" onClick={() => handleAddTask()}>
         Add Task

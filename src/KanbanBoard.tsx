@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Card } from './components/ui/card';
 import TaskInput from './TaskInput';
 import KanbanCard from './KanbanCard';
@@ -24,20 +24,14 @@ function KanbanBoard() {
     3: [],
   });
 
-  const handleAddTask = (taskTitle: string) => {
+  const handleAddTask = useCallback((taskTitle: string) => {
     const newTask: Task = {
       id: Date.now().toString(),
       title: taskTitle,
       stage: 1,
     };
-    setTasks((prevTasks) => {
-      const updateTodoTask = {
-        ...prevTasks,
-        1: [...prevTasks[1], newTask],
-      };
-      return updateTodoTask;
-    });
-  };
+    setTasks((prevTasks) => ({ ...prevTasks, 1: [...prevTasks[1], newTask] }));
+  }, []);
   return (
     <Card className="h-200">
       <div className="flex flex-col items-center">
