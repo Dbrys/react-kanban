@@ -20,7 +20,7 @@ function TaskInput({ onAddTask }: TaskInputProps) {
       <Input
         value={taskInput}
         onChange={(e) => setTaskInput(e.target.value)}
-        className="w-80"
+        className="w-80 bg-white text-black"
         placeholder="Add a new task..."
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -28,7 +28,7 @@ function TaskInput({ onAddTask }: TaskInputProps) {
           }
         }}
       />
-      <Button className="cursor-pointer" onClick={() => handleAddTask()}>
+      <Button className="cursor-pointer" onClick={handleAddTask}>
         Add Task
       </Button>
     </div>
