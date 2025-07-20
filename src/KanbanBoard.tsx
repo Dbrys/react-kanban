@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardTitle } from './components/ui/card';
 import TaskInput from './TaskInput';
 import TaskCard from './TaskCard';
@@ -22,30 +22,38 @@ const STAGES: TaskStage[] = [1, 2, 3];
 function KanbanBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const handleAddTask = useCallback((taskTitle: string) => {
+  const handleAddTask = (taskTitle: string) => {
     const newTask: Task = {
       id: Date.now().toString(),
       title: taskTitle,
       stage: 1,
     };
     setTasks((prevTasks) => [...prevTasks, newTask]);
-  }, []);
+  };
 
-  const handleUpdateTaskStage = useCallback(
-    (taskId: string, newStage: TaskStage) => {
-      setTasks((prevTasks) => {
-        const updatedTasks = prevTasks.map((task) =>
-          task.id === taskId ? { ...task, stage: newStage } : task
-        );
-        return updatedTasks;
-      });
-    },
-    []
-  );
+  const handleUpdateTaskStage = (taskId: string, newStage: TaskStage) => {
+    setTasks((prevTasks) => {
+      const updatedTasks = prevTasks.map((task) =>
+        task.id === taskId ? { ...task, stage: newStage } : task
+      );
+      return updatedTasks;
+    });
+  };
 
-  const handleDeleteTask = useCallback((taskId: string) => {
+  const handleDeleteTask = (taskId: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  }, []);
+  };
+
+  const handleUpdatingTaskTitle = (taskId: string, newTitle: string) => {
+    setTasks((prevTasks) => {
+      return prevTasks.map((task) => {
+        if (task.id === taskId) {
+          return { ...task, title: newTitle };
+        }
+        return task;
+      });
+    });
+  };
 
   const tasksByStage = useMemo(() => {
     return tasks.reduce((acc, task) => {
@@ -76,6 +84,7 @@ function KanbanBoard() {
                   task={task}
                   onDeleteClicked={handleDeleteTask}
                   onTaskUpdate={handleUpdateTaskStage}
+                  onTitleChange={handleUpdatingTaskTitle}
                 />
               ))}
             </div>
