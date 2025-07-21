@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Card, CardTitle } from './components/ui/card';
 import TaskInput from './TaskInput';
 import TaskCard from './TaskCard';
+import { AlignJustify } from 'lucide-react';
 
 export type TaskStage = 1 | 2 | 3;
 
@@ -64,29 +65,36 @@ function KanbanBoard() {
   }, [tasks]);
 
   return (
-    <Card className="h-200 bg-[#4a7c59] overflow-hidden">
+    <Card className="h-9/10 bg-[#4a7c59] overflow-hidden">
       <div className="flex flex-col items-center">
         <TaskInput onAddTask={handleAddTask} />
       </div>
-      <div className="flex flex-row justify-around p-4 h-full">
+      <div className="flex flex-row justify-around p-4 h-full overflow-y-auto">
         {STAGES.map((stage) => (
           <Card
             key={stage}
-            className="flex flex-col items-center flex-1 overflow-hidden max-h-[620px] mx-2"
+            className="flex flex-col items-center flex-1 overflow-hidden mx-2 min-w-[250px] h-full"
           >
             <CardTitle className="text-lg font-semibold mb-4 border-b-2 p-4 border-gray-200 w-1/2">
               {stageMapping[stage]}
             </CardTitle>
-            <div className="space-y-4 overflow-y-auto pr-4">
-              {tasksByStage[stage]?.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  onDeleteClicked={handleDeleteTask}
-                  onTaskUpdate={handleUpdateTaskStage}
-                  onTitleChange={handleUpdatingTaskTitle}
-                />
-              ))}
+            <div className="space-y-4 w-full overflow-y-auto pl-4 pr-4 h-full">
+              {!tasksByStage[stage] || tasksByStage[stage]?.length === 0 ? (
+                <div className="text-black flex flex-col gap-4 text-center justify-center align-center h-[90%] opacity-50">
+                  <text className='text-lg font-semibold'>No tasks</text>
+                  <AlignJustify size={64} className="mx-auto mb-2" />
+                </div>
+              ) : (
+                tasksByStage[stage].map((task) => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onDeleteClicked={handleDeleteTask}
+                    onTaskUpdate={handleUpdateTaskStage}
+                    onTitleChange={handleUpdatingTaskTitle}
+                  />
+                ))
+              )}
             </div>
           </Card>
         ))}

@@ -28,7 +28,7 @@ function TaskCard({
     }
   }, [isEditing]);
   return (
-    <Card className="py-0 w-80 bg-white gap-4 flex flex-row items-stretch border-[#4a7c59] relative">
+    <Card className="py-0 bg-white gap-4 flex flex-row items-stretch border-[#4a7c59] relative">
       {!isEditing && (
         <div className="mr-4">
           <Button
@@ -45,7 +45,7 @@ function TaskCard({
           className={
             task.stage === 3
               ? 'line-through'
-              : '' + 'text-sm font-semibold text-gray-800 w-full'
+              : '' + 'text-sm font-semibold text-gray-800 w-full break-words'
           }
           onDoubleClick={() => {
             onTitleChange(task.id, taskDescription.trim());
